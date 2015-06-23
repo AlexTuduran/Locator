@@ -1,0 +1,31 @@
+object frm_Progress: Tfrm_Progress
+  Left = 508
+  Height = 92
+  Top = 825
+  Width = 168
+  BorderStyle = bsNone
+  Caption = 'frm_Progress'
+  ClientHeight = 92
+  ClientWidth = 168
+  Font.Height = -12
+  Font.Name = 'DejaVu Sans'
+  FormStyle = fsStayOnTop
+  LCLVersion = '1.4.0.4'
+  object pnl_Main: TPanel
+    Left = 0
+    Height = 92
+    Top = 0
+    Width = 168
+    Align = alClient
+    BevelInner = bvRaised
+    Caption = 'Busy...'
+    ParentColor = False
+    TabOrder = 0
+  end
+  object tmr_Animate: TTimer
+    Interval = 200
+    OnTimer = tmr_AnimateTimer
+    left = 8
+    top = 8
+  end
+end

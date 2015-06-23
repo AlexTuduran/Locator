@@ -1,0 +1,109 @@
+object frm_Options: Tfrm_Options
+  Left = 450
+  Height = 336
+  Top = 321
+  Width = 479
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsDialog
+  Caption = 'frm_Options'
+  ClientHeight = 336
+  ClientWidth = 479
+  Font.Height = -12
+  Font.Name = 'DejaVu Sans'
+  KeyPreview = True
+  OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  Position = poScreenCenter
+  LCLVersion = '1.4.0.4'
+  object pc_Main: TPageControl
+    Left = 8
+    Height = 280
+    Top = 8
+    Width = 464
+    ActivePage = ts_OpenWith
+    TabIndex = 1
+    TabOrder = 0
+    object ts_General: TTabSheet
+      Caption = 'General'
+      ClientHeight = 252
+      ClientWidth = 454
+      object lbl_OpenPathWith: TLabel
+        Left = 16
+        Height = 14
+        Top = 16
+        Width = 98
+        Caption = 'Open path with:'
+        ParentColor = False
+      end
+      object cb_OpenPathWith: TComboBox
+        Left = 16
+        Height = 29
+        Top = 40
+        Width = 168
+        ItemHeight = 0
+        ItemIndex = 0
+        Items.Strings = (
+          'OS default'
+          'Nautilus'
+          'Nemo'
+          'Other...'
+        )
+        OnChange = cb_OpenPathWithChange
+        Style = csDropDownList
+        TabOrder = 0
+        Text = 'OS default'
+      end
+      object edt_OpenPathWith: TEdit
+        Left = 192
+        Height = 26
+        Top = 43
+        Width = 248
+        TabOrder = 1
+        Text = 'edt_OpenPathWith'
+      end
+    end
+    object ts_OpenWith: TTabSheet
+      Caption = 'Open With'
+      ClientHeight = 252
+      ClientWidth = 454
+      object lb_OpenWithApps: TListBox
+        Left = 8
+        Height = 200
+        Top = 8
+        Width = 440
+        ItemHeight = 0
+        MultiSelect = True
+        ScrollWidth = 438
+        TabOrder = 0
+        TopIndex = -1
+      end
+      object btn_Delete: TButton
+        Left = 8
+        Height = 25
+        Top = 216
+        Width = 80
+        Caption = '&Delete'
+        OnClick = btn_DeleteClick
+        TabOrder = 1
+      end
+    end
+  end
+  object btn_Ok: TButton
+    Left = 288
+    Height = 32
+    Top = 296
+    Width = 88
+    Caption = 'O&K'
+    ModalResult = 1
+    TabOrder = 1
+  end
+  object btn_Cancel: TButton
+    Left = 384
+    Height = 32
+    Top = 296
+    Width = 88
+    Caption = 'Ca&ncel'
+    ModalResult = 2
+    TabOrder = 2
+  end
+end

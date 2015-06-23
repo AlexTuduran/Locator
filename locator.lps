@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <Version Value="9"/>
+    <BuildModes Active="Default"/>
+    <Units Count="21">
+      <Unit0>
+        <Filename Value="locator.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="28" Y="27"/>
+        <UsageCount Value="86"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="ufrm_main.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frm_Main"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="Ufrm_Main"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="378"/>
+        <CursorPos Y="418"/>
+        <UsageCount Value="86"/>
+        <Bookmarks Count="3">
+          <Item0 Y="152" ID="3"/>
+          <Item1 X="3" Y="637" ID="4"/>
+          <Item2 X="37" Y="390" ID="1"/>
+        </Bookmarks>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="ufrm_options.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frm_Options"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="84"/>
+        <CursorPos X="14" Y="109"/>
+        <UsageCount Value="79"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="ufrm_progress.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frm_Progress"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="10"/>
+        <CursorPos X="30" Y="37"/>
+        <UsageCount Value="75"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="../Desktop/stuff.txt"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="5"/>
+        <DefaultSyntaxHighlighter Value="None"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="UStringSplitter.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="47" Y="26"/>
+        <UsageCount Value="6"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="/usr/lib64/lazarus/components/turbopower_ipro/iphtml.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="13870"/>
+        <CursorPos X="43" Y="13901"/>
+        <UsageCount Value="5"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="../wdc/dev/laz_comps/internettools/internet/simpleinternet.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="5"/>
+        <CursorPos X="84" Y="36"/>
+        <UsageCount Value="5"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="../wdc/dev/laz_comps/internettools/data/xquery.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="16"/>
+        <CursorPos X="56" Y="33"/>
+        <UsageCount Value="5"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="../wdc/dev/laz_comps/internettools/internet/synapseinternetaccess.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="11"/>
+        <CursorPos X="113" Y="44"/>
+        <UsageCount Value="5"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="/usr/share/fpcsrc/2.6.4/packages/fcl-process/src/process.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="535"/>
+        <CursorPos X="3" Y="565"/>
+        <UsageCount Value="7"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="UPersistency.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="10"/>
+        <CursorPos X="34" Y="35"/>
+        <UsageCount Value="9"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="/usr/lib64/lazarus/lcl/forms.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1387"/>
+        <CursorPos X="15" Y="1401"/>
+        <UsageCount Value="30"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="/usr/lib64/lazarus/lcl/dialogs.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="18"/>
+        <CursorPos X="34" Y="33"/>
+        <UsageCount Value="6"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="/usr/share/fpcsrc/2.6.4/rtl/inc/systemh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="862"/>
+        <CursorPos X="11" Y="877"/>
+        <UsageCount Value="5"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="/usr/share/fpcsrc/2.6.4/rtl/inc/astrings.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="774"/>
+        <CursorPos X="3" Y="788"/>
+        <UsageCount Value="5"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="/usr/lib64/lazarus/lcl/menus.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="270"/>
+        <CursorPos X="14" Y="285"/>
+        <UsageCount Value="6"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="/usr/lib64/lazarus/lcl/include/menuitem.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="153"/>
+        <CursorPos Y="169"/>
+        <UsageCount Value="6"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="/usr/lib64/lazarus/lcl/include/application.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1372"/>
+        <CursorPos X="16" Y="1387"/>
+        <UsageCount Value="30"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="/usr/lib64/lazarus/lcl/controls.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2049"/>
+        <CursorPos X="15" Y="2063"/>
+        <UsageCount Value="6"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="/usr/lib64/lazarus/lcl/include/wincontrol.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7298"/>
+        <CursorPos X="3" Y="7307"/>
+        <UsageCount Value="6"/>
+      </Unit20>
+    </Units>
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="146" TopLine="133"/>
+      </Position1>
+      <Position2>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="110" Column="21" TopLine="96"/>
+      </Position2>
+      <Position3>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="624" Column="3" TopLine="610"/>
+      </Position3>
+      <Position4>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="147" Column="9" TopLine="133"/>
+      </Position4>
+      <Position5>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="282" Column="16" TopLine="268"/>
+      </Position5>
+      <Position6>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="624" TopLine="604"/>
+      </Position6>
+      <Position7>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="101" Column="14" TopLine="85"/>
+      </Position7>
+      <Position8>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="621" Column="19" TopLine="616"/>
+      </Position8>
+      <Position9>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="104" Column="14" TopLine="90"/>
+      </Position9>
+      <Position10>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="248" Column="14" TopLine="224"/>
+      </Position10>
+      <Position11>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="570" Column="15" TopLine="546"/>
+      </Position11>
+      <Position12>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="572" Column="14" TopLine="548"/>
+      </Position12>
+      <Position13>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="621" Column="12" TopLine="597"/>
+      </Position13>
+      <Position14>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="104" Column="14" TopLine="90"/>
+      </Position14>
+      <Position15>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="248" Column="14" TopLine="233"/>
+      </Position15>
+      <Position16>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="570" Column="15" TopLine="558"/>
+      </Position16>
+      <Position17>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="572" Column="14" TopLine="558"/>
+      </Position17>
+      <Position18>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="621" Column="21" TopLine="621"/>
+      </Position18>
+      <Position19>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="76" Column="23" TopLine="62"/>
+      </Position19>
+      <Position20>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="107" Column="12" TopLine="83"/>
+      </Position20>
+      <Position21>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="333" Column="24" TopLine="739"/>
+      </Position21>
+      <Position22>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="335" Column="40" TopLine="321"/>
+      </Position22>
+      <Position23>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="90" Column="31" TopLine="79"/>
+      </Position23>
+      <Position24>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="389" Column="37" TopLine="380"/>
+      </Position24>
+      <Position25>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="783" Column="12" TopLine="769"/>
+      </Position25>
+      <Position26>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="151" TopLine="137"/>
+      </Position26>
+      <Position27>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="650" Column="98" TopLine="631"/>
+      </Position27>
+      <Position28>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="117" Column="26" TopLine="85"/>
+      </Position28>
+      <Position29>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="642" TopLine="615"/>
+      </Position29>
+      <Position30>
+        <Filename Value="ufrm_main.pas"/>
+        <Caret Line="654" Column="32" TopLine="645"/>
+      </Position30>
+    </JumpHistory>
+  </ProjectSession>
+</CONFIG>
