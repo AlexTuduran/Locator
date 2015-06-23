@@ -28,7 +28,7 @@ uses
   UPersistency;
 
 const
-  APP_VER = '0.4-alpha';
+  APP_VER = '0.1.0';
 
 type
 
