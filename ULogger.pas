@@ -1,47 +1,49 @@
 unit ULogger;
 
 (******************************************************************************
- * Description: Logging service                                               *
+ * Description: Logging routines                                               *
  * Author: Alexandru Tuduran                                                  *
- * Contact: mp_nova_2004@yahoo.com                                            *
+ * Contact: alex.tuduran@gmail.com                                            *
  ******************************************************************************)
 
 interface
 
-{$DEFINE USE_DEBUGGING} //enable or disable this;
-{$IFDEF USE_DEBUGGING}
-uses
-  SysUtils, Forms;
-{$ENDIF}
+{$define NUSE_LOGGING} //enable or disable this;
 
-  procedure Log(Msg: String);
-  procedure ILog(Msg: String);
-  procedure WLog(Msg: String);
-  procedure ELog(Msg: String; Routine: String);
+{$ifdef USE_LOGGING}
+uses
+  SysUtils,
+  Forms;
+{$endif}
+
+procedure Log(Msg: String);
+procedure ILog(Msg: String);
+procedure WLog(Msg: String);
+procedure ELog(Msg: String; Routine: String);
 
 implementation
 
 const
   MAX_LOG_COUNTER = 2000000000; // make it an obvious value;
 
-{$IFDEF USE_DEBUGGING}
+{$ifdef USE_LOGGING}
 var
   LogCounter: Integer;
-{$ENDIF}
+{$endif}
 
 { Interface routines }
 
 procedure Log(Msg: String);
-{$IFDEF USE_DEBUGGING}
+{$ifdef USE_LOGGING}
 var
   F: Text;
   FN: String;
   T: TSystemTime;
   TStr: String;
   i: Integer;
-{$ENDIF}
+{$endif}
 begin
-  {$IFDEF USE_DEBUGGING}
+{$ifdef USE_LOGGING}
   FN := ExtractFilePath(Application.ExeName) + 'app.log';
   AssignFile(F, FN);
   if FileExists(FN) then
@@ -71,28 +73,36 @@ begin
 
   Flush(F);
   Close(F);
-  {$ENDIF}
+{$else}
+  Msg := Msg;
+{$endif}
 end;
 
 procedure ILog(Msg: String);
 begin
-  {$IFDEF USE_DEBUGGING}
+{$ifdef USE_LOGGING}
   Log(Format('INF|%s', [Msg]));
-  {$ENDIF}
+{$else}
+  Msg := Msg;
+{$endif}
 end;
 
 procedure WLog(Msg: String);
 begin
-  {$IFDEF USE_DEBUGGING}
+{$ifdef USE_LOGGING}
   Log(Format('WRN|%s', [Msg]));
-  {$ENDIF}
+{$else}
+  Msg := Msg;
+{$endif}
 end;
 
 procedure ELog(Msg: String; Routine: String);
 begin
-  {$IFDEF USE_DEBUGGING}
+{$ifdef USE_LOGGING}
   Log(Format('ERR|%s()|%s', [Routine, Msg]));
-  {$ENDIF}
+{$else}
+  Msg := Msg;
+{$endif}
 end;
 
 end.
