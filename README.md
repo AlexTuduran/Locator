@@ -13,7 +13,7 @@ On Linux:
 
 Get the source code from GitHub (https://github.com/AlexTuduran/Locator):
 
-$ git clone https://github.com/AlexTuduran/Locator.git
+$ git clone https://github.com/AlexTuduran/Locator.git  
 $ cd Locator
 
 Load locator.lpr with Lazaru and build. Binary should be created under "/_.bin".
