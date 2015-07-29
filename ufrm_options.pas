@@ -25,6 +25,7 @@ type
     btn_Cancel: TButton;
     btn_Delete: TButton;
     cb_OpenPathWith: TComboBox;
+    cb_ShowOpFailWarns: TCheckBox;
     edt_OpenPathWith: TEdit;
     lbl_OpenPathWith: TLabel;
     lb_OpenWithApps: TListBox;
@@ -63,6 +64,8 @@ end;
 
 procedure Tfrm_Options.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
+  Shift := Shift;
+
   if Key = VK_ESCAPE then
     Close;
 end;

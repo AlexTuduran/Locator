@@ -28,6 +28,8 @@ uses
   procedure Pers_Gen_Set_WndH(Value: Integer);
   function Pers_Gen_Get_Open_Path_App: String;
   procedure Pers_Gen_Set_Open_Path_App(Value: String);
+  function Pers_Gen_Get_Show_Op_Fail_Warns: Boolean;
+  procedure Pers_Gen_Set_Show_Op_Fail_Warns(Value: Boolean);
 
   function Pers_OpenWith_Get_Num_Apps: Integer;
   procedure Pers_OpenWith_Set_Num_Apps(Value: Integer);
@@ -156,6 +158,16 @@ end;
 procedure Pers_Gen_Set_WndH(Value: Integer);
 begin
   Write_Integer(INI_GEN_SECTION, 'Wnd_H', Value);
+end;
+
+function Pers_Gen_Get_Show_Op_Fail_Warns: Boolean;
+begin
+  Result := Read_Boolean(INI_GEN_SECTION, 'Show_Op_Fail_Warns', True);
+end;
+
+procedure Pers_Gen_Set_Show_Op_Fail_Warns(Value: Boolean);
+begin
+  Write_Boolean(INI_GEN_SECTION, 'Show_Op_Fail_Warns', Value);
 end;
 
 { Specialized routines - open with }

@@ -15,7 +15,11 @@ uses
   ufrm_options,
   ufrm_progress;
 
-{$R *.res}
+{$ifdef DEBUG}
+  {$R locator-debug-a.res}
+{$else}
+  {$R locator-release.res}
+{$endif}
 
 begin
   Application.Title := 'Locator';

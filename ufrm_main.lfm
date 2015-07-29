@@ -1,24 +1,26 @@
 object frm_Main: Tfrm_Main
-  Left = 696
-  Height = 418
-  Top = 301
+  Left = 594
+  Height = 422
+  Top = 550
   Width = 949
   Caption = 'frm_Main'
-  ClientHeight = 391
+  ClientHeight = 395
   ClientWidth = 949
   Font.Height = -12
   Font.Name = 'DejaVu Sans'
+  KeyPreview = True
   Menu = mnu_Main
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnHide = FormHide
+  OnKeyDown = FormKeyDown
   OnShow = FormShow
   Position = poScreenCenter
   LCLVersion = '1.4.0.4'
   object lv_Files: TListView
     Left = 0
-    Height = 343
+    Height = 347
     Top = 25
     Width = 949
     Align = alClient
@@ -60,7 +62,7 @@ object frm_Main: Tfrm_Main
   object sb_Main: TStatusBar
     Left = 0
     Height = 23
-    Top = 368
+    Top = 372
     Width = 949
     Panels = <    
       item
@@ -158,6 +160,12 @@ object frm_Main: Tfrm_Main
     top = 64
     object mi_File: TMenuItem
       Caption = '&File'
+      object mi_NewSearchWindow: TMenuItem
+        Action = ac_NewSearchWindow
+      end
+      object MenuItem7: TMenuItem
+        Caption = '-'
+      end
       object mi_Exit: TMenuItem
         Caption = 'E&xit'
         OnClick = mi_ExitClick
@@ -166,24 +174,35 @@ object frm_Main: Tfrm_Main
     object mi_Tools: TMenuItem
       Caption = '&Tools'
       object mi_Options: TMenuItem
-        Caption = '&Options'
-        ShortCut = 16463
-        OnClick = mi_OptionsClick
+        Action = ac_Options
+      end
+      object mi_SuperUser: TMenuItem
+        Action = ac_SuperUser
       end
       object MenuItem4: TMenuItem
         Caption = '-'
       end
       object mi_UpdateDB: TMenuItem
-        Caption = 'Update Database (SUDO)'
+        Caption = '&Update Database (SUDO)'
         OnClick = mi_UpdateDBClick
       end
     end
     object mi_Help: TMenuItem
       Caption = '&Help'
       object mi_About: TMenuItem
-        Caption = 'About...'
+        Caption = '&About...'
         ShortCut = 112
         OnClick = mi_AboutClick
+      end
+      object mi_TestBackdoorSeparator: TMenuItem
+        Caption = '-'
+        Visible = False
+      end
+      object mi_TestBackdoor: TMenuItem
+        Caption = '[Test Backdoor]'
+        ShortCut = 123
+        Visible = False
+        OnClick = mi_TestBackdoorClick
       end
     end
   end
@@ -4474,6 +4493,7 @@ object frm_Main: Tfrm_Main
       8001AC418001AC410000AC410000AC410000AC410000AC410000AC410000AC41
       8001AC418001AC41C003AC41E007AC41F01FAC41
     }
+    OnClick = ti_MainClick
     OnDblClick = ti_MainDblClick
     left = 8
     top = 96
@@ -4482,15 +4502,17 @@ object frm_Main: Tfrm_Main
     left = 72
     top = 64
     object mi_TrayNewSearchWindow: TMenuItem
-      Caption = '&New Search Window'
-      OnClick = mi_TrayNewSearchWindowClick
+      Action = ac_NewSearchWindow
     end
     object MenuItem6: TMenuItem
       Caption = '-'
     end
     object mi_TrayOptions: TMenuItem
-      Caption = '&Options'
+      Action = ac_Options
       OnClick = mi_TrayOptionsClick
+    end
+    object mi_TraySuperUser: TMenuItem
+      Action = ac_SuperUser
     end
     object MenuItem8: TMenuItem
       Caption = '-'
@@ -4512,5 +4534,21 @@ object frm_Main: Tfrm_Main
     OnTimer = tmr_PopupTimer
     left = 72
     top = 96
+  end
+  object ActionList1: TActionList
+    left = 104
+    top = 64
+    object ac_NewSearchWindow: TAction
+      Caption = '&New Search Window'
+      OnExecute = ac_NewSearchWindowExecute
+    end
+    object ac_Options: TAction
+      Caption = '&Options'
+      OnExecute = ac_OptionsExecute
+    end
+    object ac_SuperUser: TAction
+      Caption = '&Super-user'
+      OnExecute = ac_SuperUserExecute
+    end
   end
 end
