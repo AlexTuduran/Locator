@@ -25,8 +25,8 @@ object frm_Options: Tfrm_Options
     TabOrder = 0
     object ts_General: TTabSheet
       Caption = 'General'
-      ClientHeight = 252
-      ClientWidth = 454
+      ClientHeight = 244
+      ClientWidth = 456
       object lbl_OpenPathWith: TLabel
         Left = 16
         Height = 14
@@ -37,7 +37,7 @@ object frm_Options: Tfrm_Options
       end
       object cb_OpenPathWith: TComboBox
         Left = 16
-        Height = 29
+        Height = 26
         Top = 40
         Width = 168
         ItemHeight = 0
@@ -55,7 +55,7 @@ object frm_Options: Tfrm_Options
       end
       object edt_OpenPathWith: TEdit
         Left = 192
-        Height = 26
+        Height = 20
         Top = 43
         Width = 248
         TabOrder = 1
@@ -63,17 +63,18 @@ object frm_Options: Tfrm_Options
       end
       object cb_ShowOpFailWarns: TCheckBox
         Left = 16
-        Height = 23
+        Height = 26
         Top = 88
-        Width = 220
+        Width = 240
+        AutoSize = False
         Caption = 'Show operation failure warnings'
         TabOrder = 2
       end
     end
     object ts_OpenWith: TTabSheet
       Caption = 'Open With'
-      ClientHeight = 252
-      ClientWidth = 454
+      ClientHeight = 244
+      ClientWidth = 456
       object lb_OpenWithApps: TListBox
         Left = 8
         Height = 200
@@ -81,7 +82,7 @@ object frm_Options: Tfrm_Options
         Width = 440
         ItemHeight = 0
         MultiSelect = True
-        ScrollWidth = 438
+        ScrollWidth = 436
         TabOrder = 0
         TopIndex = -1
       end

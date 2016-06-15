@@ -1,10 +1,11 @@
 object frm_Main: Tfrm_Main
-  Left = 499
+  Left = 498
   Height = 422
-  Top = 510
+  Top = 463
   Width = 949
+  ActiveControl = pnl_Locate
   Caption = 'frm_Main'
-  ClientHeight = 395
+  ClientHeight = 400
   ClientWidth = 949
   Font.Height = -12
   Font.Name = 'DejaVu Sans'
@@ -20,7 +21,7 @@ object frm_Main: Tfrm_Main
   LCLVersion = '1.4.0.4'
   object lv_Files: TListView
     Left = 0
-    Height = 347
+    Height = 353
     Top = 25
     Width = 949
     Align = alClient
@@ -35,13 +36,13 @@ object frm_Main: Tfrm_Main
         AutoSize = True
         Caption = 'Size'
         MinWidth = 20
-        Width = 44
+        Width = 35
       end    
       item
         AutoSize = True
         Caption = 'Date Modified'
         MinWidth = 20
-        Width = 203
+        Width = 210
       end>
     ColumnClick = False
     Font.Height = -12
@@ -61,8 +62,8 @@ object frm_Main: Tfrm_Main
   end
   object sb_Main: TStatusBar
     Left = 0
-    Height = 23
-    Top = 372
+    Height = 22
+    Top = 378
     Width = 949
     Panels = <    
       item
@@ -150,6 +151,14 @@ object frm_Main: Tfrm_Main
     object MenuItem1: TMenuItem
       Caption = '-'
     end
+    object mi_Delete: TMenuItem
+      Caption = '&Delete'
+      ShortCut = 46
+      OnClick = mi_DeleteClick
+    end
+    object MenuItem5: TMenuItem
+      Caption = '-'
+    end
     object mi_Properties: TMenuItem
       Caption = 'Prope&rties'
       OnClick = mi_PropertiesClick
@@ -176,14 +185,21 @@ object frm_Main: Tfrm_Main
       object mi_Options: TMenuItem
         Action = ac_Options
       end
+      object MenuItem9: TMenuItem
+        Caption = '-'
+      end
       object mi_SuperUser: TMenuItem
         Action = ac_SuperUser
+      end
+      object mi_ExcludeCBE: TMenuItem
+        Action = ac_ExcludeCBE
       end
       object MenuItem4: TMenuItem
         Caption = '-'
       end
       object mi_UpdateDB: TMenuItem
         Caption = '&Update Database (SUDO)'
+        ShortCut = 116
         OnClick = mi_UpdateDBClick
       end
     end
@@ -4535,9 +4551,9 @@ object frm_Main: Tfrm_Main
     left = 72
     top = 96
   end
-  object ActionList1: TActionList
-    left = 104
-    top = 64
+  object al_Main: TActionList
+    left = 8
+    top = 128
     object ac_NewSearchWindow: TAction
       Caption = '&New Search Window'
       OnExecute = ac_NewSearchWindowExecute
@@ -4549,6 +4565,10 @@ object frm_Main: Tfrm_Main
     object ac_SuperUser: TAction
       Caption = '&Super-user'
       OnExecute = ac_SuperUserExecute
+    end
+    object ac_ExcludeCBE: TAction
+      Caption = 'Exclude &CBE'
+      OnExecute = ac_ExcludeCBEExecute
     end
   end
 end

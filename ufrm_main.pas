@@ -20,6 +20,7 @@ uses
   Process,
   LCLType,
   LCLIntF,
+  LCLProc,
   Menus,
   ExtCtrls,
   Clipbrd,
@@ -31,20 +32,25 @@ uses
   ULogger;
 
 const
-  APP_VER = '0.1.1-alpha';
+  APP_VER = '0.1.2-alpha';
 
 type
 
   { Tfrm_Main }
 
   Tfrm_Main = class(TForm)
+    ac_ExcludeCBE: TAction;
     ac_SuperUser: TAction;
     ac_NewSearchWindow: TAction;
     ac_Options: TAction;
-    ActionList1: TActionList;
+    al_Main: TActionList;
     btn_Locate: TButton;
     edt_SearchPattern: TEdit;
     MenuItem3: TMenuItem;
+    MenuItem5: TMenuItem;
+    MenuItem9: TMenuItem;
+    mi_ExcludeCBE: TMenuItem;
+    mi_Delete: TMenuItem;
     mi_TestBackdoorSeparator: TMenuItem;
     mi_TestBackdoor: TMenuItem;
     mi_TraySuperUser: TMenuItem;
@@ -83,6 +89,7 @@ type
     mnu_PopupTray: TPopupMenu;
     sb_Main: TStatusBar;
     ti_Main: TTrayIcon;
+    procedure ac_ExcludeCBEExecute(Sender: TObject);
     procedure ac_NewSearchWindowExecute(Sender: TObject);
     procedure ac_OptionsExecute(Sender: TObject);
     procedure ac_SuperUserExecute(Sender: TObject);
@@ -99,6 +106,7 @@ type
     procedure lv_FilesDrawItem(Sender: TCustomListView; AItem: TListItem; ARect: TRect; AState: TOwnerDrawState);
     procedure lv_FilesKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure lv_FilesMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure mi_DeleteClick(Sender: TObject);
     procedure mi_TestBackdoorClick(Sender: TObject);
     procedure mi_TrayOptionsClick(Sender: TObject);
     procedure mi_TrayExitClick(Sender: TObject);
@@ -122,11 +130,13 @@ type
     FInitialW: Integer;
     FInitialH: Integer;
     FCanClose: Boolean;
+    FOperation: String;
     FLastX: Integer;
     FLastY: Integer;
     FShowMenu: Boolean;
-    FLastCommandParam: String;
+    FLastCommandParams: String;
     FLastCommandOutput: String;
+    FSuppressUpdateDBDialogs: Boolean;
 
     procedure OpenWithAppClick(Sender: TObject);
 
@@ -134,8 +144,15 @@ type
     procedure ResetLocate;
     procedure LockUI(Lock: Boolean);
     procedure SetOperation(Operation: String);
+    function GetOperation: String;
     procedure SetStatus(Status: String);
+    function GetStatus: String;
     procedure WarnUser(Msg: String);
+    function GetUpdateDBMenuPath: String;
+    function GetUpdateDBShortcut: String;
+    function GetUpdateDBDirections: String;
+    function GetSuperUserMenuPath: String;
+    function GetSuperUserDirections: String;
 
     procedure ILog(Msg: String);
     procedure WLog(Msg: String);
@@ -148,7 +165,7 @@ type
     function OpenDocumentEx(FileName: String; SuperUser: Boolean): Boolean; overload;
     function OpenDocumentEx(FileName: String; SuperUser: Boolean; var OSHandlerApp: String): Boolean; overload;
 
-    procedure LocateFiles(SearchPattern: String);
+    procedure LocateFiles(SearchPattern: String; JustUpdatedDB: Boolean);
     procedure FilterList(List: TStringList; Keyword: String);
   public
     { public declarations }
@@ -253,6 +270,16 @@ begin
   end;
 end;
 
+function Caption_To_Message(Caption: String): String;
+var
+  i: Integer;
+begin
+  Result := '';
+  for i := 1 to Length(Caption) do
+    if Caption[i] <> '&' then
+      Result := Result + Caption[i];
+end;
+
 { Tfrm_Main }
 
 {$R *.lfm}
@@ -269,6 +296,9 @@ begin
 
   FInitialW := Width;
   FInitialH := Height;
+
+  ac_SuperUser.Checked := Pers_Gen_Get_Super_User;
+  ac_ExcludeCBE.Checked := Pers_Gen_Get_Exclude_CBE;
 
   Reset;
   System.Randomize;
@@ -325,6 +355,7 @@ begin
   mi_CopyFullNameToClipboard.Enabled        := HasSelectedFile;
   mi_CopyPathToClipboard.Enabled            := HasSelectedFile;
   mi_CopyNameOnlyToClipboard.Enabled        := HasSelectedFile;
+  mi_Delete.Enabled                         := HasSelectedFile;
   mi_Properties.Enabled                     := HasSelectedFile;
 end;
 
@@ -390,6 +421,9 @@ begin
 
   if Key = VK_RETURN then
     mi_Open.Click;
+
+  if Key = VK_DELETE then
+    mi_Delete.Click;
 end;
 
 procedure Tfrm_Main.lv_FilesMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -405,6 +439,57 @@ begin
     FLastY := P.Y;
     FShowMenu := True;
   end;
+end;
+
+procedure Tfrm_Main.mi_DeleteClick(Sender: TObject);
+var
+  FileName: String;
+  DlgCaption: String;
+begin
+  if lv_Files.Items.Count < 1 then
+    Exit;
+
+  if not Assigned(lv_Files.ItemFocused) then
+    Exit;
+
+  FileName := lv_Files.ItemFocused.Caption;
+  if FileExists(FileName) then
+  begin
+    DlgCaption := 'Delete';
+    if MessageDlg(DlgCaption, Format('Delete "%s"?' + #13#13 + 'Trash is not used ("rm -rf").', [FileName]), mtConfirmation, [mbYes, mbNo], 0) <> mrYes then
+      Exit;
+
+    if ExecuteCommand('', 'rm', [FileName, '-rf'], mi_SuperUser.Checked) then
+    begin
+      MessageDlg( Format( 'Successfully removed "%s".',
+                          [ FileName ] ),
+                  mtInformation,
+                  [mbOk],
+                  0 );
+
+      // update db and refresh current search;
+      FSuppressUpdateDBDialogs := True;
+      mi_UpdateDB.Click;
+      FSuppressUpdateDBDialogs := False;
+    end
+    else
+      MessageDlg( Format( 'Could not remove "%s".' + #13#13 +
+                          'Perhaps you don''t have sufficient permissions.' + #13#13 +
+                          '%s' + #13#13 +
+                          'But be warned, with great power comes great responsability.',
+                          [ FileName, GetSuperUserDirections ] ),
+                  mtWarning,
+                  [mbOk],
+                  0 );
+  end
+  else
+    MessageDlg( Format( '"%s" does not exist.' + #13#13 +
+                        'You should update the "locate" database.' + #13#13 +
+                        '%s',
+                        [ FileName, GetUpdateDBDirections ] ),
+                mtWarning,
+                [mbOk],
+                0 );
 end;
 
 procedure Tfrm_Main.mi_TestBackdoorClick(Sender: TObject);
@@ -526,13 +611,18 @@ end;
 procedure Tfrm_Main.mi_UpdateDBClick(Sender: TObject);
 var
   CmdStatus: Boolean;
+  DlgCaption: String;
 begin
-  if MessageDlg('This is a potentially long operation lasting seconds to minutes.' + #13#13 + 'Continue?', mtConfirmation, [mbYes, mbNo], 0) <> mrYes then
-  begin
-    MessageDlg('Database was not updated.' + #13#13 + 'Operation was canceled by user.', mtWarning, [mbOk], 0);
-    Exit;
-  end;
+  DlgCaption := 'Update locate database';
 
+  if not FSuppressUpdateDBDialogs then
+    if MessageDlg(DlgCaption, 'This is a potentially long operation lasting seconds to minutes.' + #13#13 + 'Continue?', mtConfirmation, [mbYes, mbNo], 0) <> mrYes then
+    begin
+      MessageDlg(DlgCaption, 'Database was not updated.' + #13#13 + 'Operation was canceled by user.', mtWarning, [mbOk], 0);
+      Exit;
+    end;
+
+  CmdStatus := False;
   try
     SetOperation('Updating database...');
     SetStatus('Busy');
@@ -540,14 +630,21 @@ begin
     Application.ProcessMessages;
     CmdStatus := ExecuteCommand('', 'updatedb', [], True); // updatedb requires sudo;
     Application.ProcessMessages;
-    if CmdStatus then
-      MessageDlg('Database updated successfully.', mtInformation, [mbOk], 0)
-    else
-      MessageDlg('Database could not be updated.' + #13#13 + 'Please open a terminal and manually run command "sudo updatedb".', mtWarning, [mbOk], 0);
-  finally
-    // locate output might be different after an update-db;
-    ResetLocate;
 
+    if CmdStatus and (Length(edt_SearchPattern.Text) > 0) then
+    begin
+      SetOperation('Updating current search...');
+      SetStatus('Busy');
+      ResetLocate;
+      LocateFiles(edt_SearchPattern.Text, True);
+    end;
+
+    if not FSuppressUpdateDBDialogs then
+      if CmdStatus then
+        MessageDlg(DlgCaption, 'Database updated successfully.', mtInformation, [mbOk], 0)
+      else
+        MessageDlg(DlgCaption, 'Database could not be updated.' + #13#13 + 'Please open a terminal and manually run command "sudo updatedb".', mtWarning, [mbOk], 0);
+  finally
     LockUI(False);
     SetStatus('Idle');
     SetOperation('');
@@ -784,7 +881,7 @@ end;
 
 procedure Tfrm_Main.ResetLocate;
 begin
-  FLastCommandParam := '';
+  FLastCommandParams := '';
   FLastCommandOutput := '';
 end;
 
@@ -799,11 +896,22 @@ end;
 
 procedure Tfrm_Main.SetOperation(Operation: String);
 begin
-  if Length(Operation) < 1 then
-    Caption := Format('%s', [Application.Title])
-  else
-    Caption := Format('%s - [%s] ', [Application.Title, Operation]);
+  FOperation := Operation;
+
+  Caption := Application.Title;
+
+  if mi_SuperUser.Checked then
+    Caption := Format('%s (Super-user mode)', [Caption]);
+
+  if Length(Operation) > 0 then
+    Caption := Format('%s - [%s] ', [Caption, Operation]);
+
   Application.ProcessMessages;
+end;
+
+function Tfrm_Main.GetOperation: String;
+begin
+  Result := FOperation;
 end;
 
 procedure Tfrm_Main.SetStatus(Status: String);
@@ -812,11 +920,45 @@ begin
   Application.ProcessMessages;
 end;
 
+function Tfrm_Main.GetStatus: String;
+begin
+  Result := sb_Main.Panels[0].Text;
+end;
+
 procedure Tfrm_Main.WarnUser(Msg: String);
 begin
   WLog(Msg);
   if Pers_Gen_Get_Show_Op_Fail_Warns then
     MessageDlg(Msg, mtWarning, [mbOk], 0);
+end;
+
+function Tfrm_Main.GetUpdateDBMenuPath: String;
+begin
+  Result := Format( 'main menu -> %s -> %s',
+                    [ Caption_To_Message(mi_Tools.Caption),
+                      Caption_To_Message(mi_UpdateDB.Caption) ] );
+end;
+
+function Tfrm_Main.GetUpdateDBShortcut: String;
+begin
+  Result := ShortCutToText(mi_UpdateDB.ShortCut);
+end;
+
+function Tfrm_Main.GetUpdateDBDirections: String;
+begin
+  Result := Format('You can update the "locate" database from %s or by pressing %s.', [GetUpdateDBMenuPath, GetUpdateDBShortcut]);
+end;
+
+function Tfrm_Main.GetSuperUserMenuPath: String;
+begin
+  Result := Format( 'main menu -> %s -> %s',
+                    [ Caption_To_Message(mi_Tools.Caption),
+                      Caption_To_Message(mi_SuperUser.Caption) ] );
+end;
+
+function Tfrm_Main.GetSuperUserDirections: String;
+begin
+  Result := Format('Try impersonating super-user by checking %s.', [GetSuperUserMenuPath]);
 end;
 
 procedure Tfrm_Main.ILog(Msg: String);
@@ -883,7 +1025,7 @@ end;
 
 function Tfrm_Main.TriggerCommand(Directory: String; Command: String; Parameters: array of String; SuperUser: Boolean): Boolean;
 begin
-Result := TriggerCommand(Directory, Command, Parameters, SuperUser, TMO_NONE);
+  Result := TriggerCommand(Directory, Command, Parameters, SuperUser, TMO_NONE);
 end;
 
 function Tfrm_Main.TriggerCommand(Directory: String; Command: String; Parameters: array of String; SuperUser: Boolean; TimeoutMS: Integer): Boolean;
@@ -958,7 +1100,7 @@ begin
   Result := TriggerCommand(Get_Home_Dir, OSHandlerApp, [FileName], SuperUser, TMO_MS_OPEN_DOC);
 end;
 
-procedure Tfrm_Main.LocateFiles(SearchPattern: String);
+procedure Tfrm_Main.LocateFiles(SearchPattern: String; JustUpdatedDB: Boolean);
 const
   IDX_TOKEN_COMMAND_PARAM = 0;
   LOCATE_CMD = 'locate';
@@ -967,6 +1109,8 @@ var
   Files: TStringList;
   i: Integer;
   Tokens: TStringList;
+  CommandParams: String;
+  DlgMsg: String;
 begin
   SearchPattern := Trim(SearchPattern);
   if Length(SearchPattern) < 1 then
@@ -981,21 +1125,31 @@ begin
     else
       Inc(i);
   Tokens.EndUpdate;
+  CommandParams := Tokens[IDX_TOKEN_COMMAND_PARAM];
+
+  if ac_ExcludeCBE.Checked then
+    Tokens.Add('!cbe');
 
   Files := TStringList.Create;
 
   // get the file list from the output of the executed locate command if command parameter is a different one;
-  if FLastCommandParam <> Tokens[IDX_TOKEN_COMMAND_PARAM] then
+  if FLastCommandParams <> CommandParams then
   begin
     CmdOutput := '';
-    if not ExecuteCommand('/', LOCATE_CMD, [Tokens[IDX_TOKEN_COMMAND_PARAM]], False, CmdOutput) then // specifially use '/' to locate in the root context; // locate doesn't require sudo'
+    if not ExecuteCommand('/', LOCATE_CMD, [CommandParams], False, CmdOutput) then // specifially use '/' to locate in the root context; // locate doesn't require sudo
     begin
       CmdOutput := '';
-      MessageDlg(Format('Could not run the "%s" command: External failure.', [LOCATE_CMD]), mtWarning, [mbOk], 0);
+      DlgMsg := Format('Nothing was found for "%s".', [CommandParams]);
+      if not JustUpdatedDB then
+        DlgMsg := DlgMsg + #13#13 + Format( 'You should update the "locate" database.' + #13#13 +
+                                            '%s',
+                                            [GetUpdateDBDirections] );
+      MessageDlg(DlgMsg, mtInformation, [mbOk], 0);
     end;
     Files.Text := CmdOutput;
+    CmdOutput := Files.Text; // because the string list might change the text property;
 
-    FLastCommandParam := Tokens[IDX_TOKEN_COMMAND_PARAM];
+    FLastCommandParams := CommandParams;
     FLastCommandOutput := CmdOutput;
   end
 
@@ -1003,22 +1157,29 @@ begin
   else
     Files.Text := FLastCommandOutput;
 
+  // apply filtering according to the user input;
   for i := 1 to Tokens.Count - 1 do
     FilterList(Files, Tokens[i]);
 
   Tokens.Free;
 
+  // transfer entries to the list view;
   lv_Files.Items.BeginUpdate;
   lv_Files.Clear;
   for i := 0 to Files.Count - 1 do
-    lv_Files.AddItem(Files[i], nil);
+    if FileExists(Files[i]) then
+      lv_Files.AddItem(Files[i], nil);
   lv_Files.Items.EndUpdate;
   Application.ProcessMessages;
 
   Files.Free;
 
+  // select first item;
   if lv_Files.Items.Count > 0 then
     lv_Files.ItemIndex := 0;
+
+  // update the entry count in the status bar;
+  sb_Main.Panels[1].Text := Format('%d files', [lv_Files.Items.Count]);
 end;
 
 procedure Tfrm_Main.FilterList(List: TStringList; Keyword: String);
@@ -1056,8 +1217,7 @@ begin
     SetOperation('Fetching...');
     SetStatus('Busy');
     LockUI(True);
-    LocateFiles(edt_SearchPattern.Text);
-    sb_Main.Panels[1].Text := Format('%d files', [lv_Files.Items.Count]);
+    LocateFiles(edt_SearchPattern.Text, False);
   finally
     LockUI(False);
     SetStatus('Idle');
@@ -1098,18 +1258,28 @@ procedure Tfrm_Main.ac_SuperUserExecute(Sender: TObject);
 const
   SUPER_USER_DIPLAY_PREFIX = '(SUDO) ';
 begin
+  ac_SuperUser.Checked := not ac_SuperUser.Checked;
+  Pers_Gen_Set_Super_User(ac_SuperUser.Checked);
+
   mi_Open.Caption                        := '&Open';
   mi_OpenPath.Caption                    := 'Open &Path';
   mi_OpenWith.Caption                    := 'Open &With...';
-
-  ac_SuperUser.Checked := not ac_SuperUser.Checked;
+  mi_Delete.Caption                      := '&Delete';
 
   if ac_SuperUser.Checked then
   begin
     mi_Open.Caption                        := SUPER_USER_DIPLAY_PREFIX + mi_Open.Caption;
     mi_OpenPath.Caption                    := SUPER_USER_DIPLAY_PREFIX + mi_OpenPath.Caption;
     mi_OpenWith.Caption                    := SUPER_USER_DIPLAY_PREFIX + mi_OpenWith.Caption;
+    mi_Delete.Caption                      := SUPER_USER_DIPLAY_PREFIX + mi_Delete.Caption;
   end;
+
+  if ac_SuperUser.Checked then
+    lv_Files.Font.Color := clRed
+  else
+    lv_Files.Font.Color := clDefault;
+
+  SetOperation(GetOperation);
 end;
 
 procedure Tfrm_Main.ac_NewSearchWindowExecute(Sender: TObject);
@@ -1162,6 +1332,12 @@ begin
     Form.Left := Pos.X;
     Form.Top  := Pos.Y;
   end;
+end;
+
+procedure Tfrm_Main.ac_ExcludeCBEExecute(Sender: TObject);
+begin
+  ac_ExcludeCBE.Checked := not ac_ExcludeCBE.Checked;
+  Pers_Gen_Set_Exclude_CBE(ac_ExcludeCBE.Checked);
 end;
 
 procedure Tfrm_Main.edt_SearchPatternKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);

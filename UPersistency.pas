@@ -30,6 +30,10 @@ uses
   procedure Pers_Gen_Set_Open_Path_App(Value: String);
   function Pers_Gen_Get_Show_Op_Fail_Warns: Boolean;
   procedure Pers_Gen_Set_Show_Op_Fail_Warns(Value: Boolean);
+  function Pers_Gen_Get_Super_User: Boolean;
+  procedure Pers_Gen_Set_Super_User(Value: Boolean);
+  function Pers_Gen_Get_Exclude_CBE: Boolean;
+  procedure Pers_Gen_Set_Exclude_CBE(Value: Boolean);
 
   function Pers_OpenWith_Get_Num_Apps: Integer;
   procedure Pers_OpenWith_Set_Num_Apps(Value: Integer);
@@ -168,6 +172,26 @@ end;
 procedure Pers_Gen_Set_Show_Op_Fail_Warns(Value: Boolean);
 begin
   Write_Boolean(INI_GEN_SECTION, 'Show_Op_Fail_Warns', Value);
+end;
+
+function Pers_Gen_Get_Super_User: Boolean;
+begin
+  Result := Read_Boolean(INI_GEN_SECTION, 'Super_User', False);
+end;
+
+procedure Pers_Gen_Set_Super_User(Value: Boolean);
+begin
+  Write_Boolean(INI_GEN_SECTION, 'Super_User', Value);
+end;
+
+function Pers_Gen_Get_Exclude_CBE: Boolean;
+begin
+  Result := Read_Boolean(INI_GEN_SECTION, 'Exclude_CBE', False);
+end;
+
+procedure Pers_Gen_Set_Exclude_CBE(Value: Boolean);
+begin
+  Write_Boolean(INI_GEN_SECTION, 'Exclude_CBE', Value);
 end;
 
 { Specialized routines - open with }
