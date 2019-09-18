@@ -54,6 +54,11 @@ implementation
 
 { Tfrm_Options }
 
+function Get_Root_Path: String;
+begin
+  Result := '.';
+end;
+
 procedure Tfrm_Options.FormCreate(Sender: TObject);
 begin
   Caption := 'Options';
